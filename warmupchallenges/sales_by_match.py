@@ -1,3 +1,5 @@
+__author__ = "Ilay Gilman"
+
 """
 Question Description:
 Alex works at a clothing store.
@@ -36,7 +38,6 @@ def sock_merch(n, arr):
         else:
             match_holder[current_sock] = 1
     return match_counter
-
 
 # tests
 # print(sock_merch(7, [1, 2, 1, 2, 1, 3, 2]))
