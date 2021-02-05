@@ -18,38 +18,63 @@
  * https://www.hackerrank.com/challenges/new-year-chaos/
 \**********************************************************************************************************************/
 
-/* opt 1 */
+/* opt 1 - 100% rate*/
+// Complete the minimumBribes function below.
 void minimumBribes(int q_count, int* q)
 {
     int bribes_counter = 0;
+    /* first checking for too chaotic scenario, can saves us a lot of calculations */
     for (int i = 0; i < q_count; i++)
     {
-        /* a bribe occurred - by index */
+        if ((i+1) < (q[i] - 2))
+        {
+            printf("Too chaotic\n");
+            return;
+        }
+    }
+    /* we know the case is valid, starting the calculations */
+    for (int i = 0; i < q_count; i++)
+    {
+        /* a bribe occurred - by index | [1,2,5,3,4] - 5 number is in index 3 */
         if ((i+1) < q[i])
         {
-            /* more than 2 bribes - too chaotic */
-            if ((i+1) < (q[i] - 2))
-            {
-                printf("Too chaotic\n");
-                return;
-            }
             /* updating bribes */
-            else
-            {
-                bribes_counter += (q[i] - (i+1));
-            }
+            bribes_counter += (q[i] - (i+1));
         }
-        /* checking if a bribe occurred - by order */
+        /* checking if a bribe occurred - by order | [3,2,1,4] - 2 number is in index 2, but bribed 1 */
         else
         {
-            /* running till the end, checking if the q[i] bribed someone */
-            for (int j = i; j < q_count; j++)
+            /* choosing a batter travel option */
+            if (i > q_count/2)
             {
-                if (q[j] < q[i])
+                /* running till the end, checking if the q[i] bribed someone */
+                for (int j = i; j < q_count; j++)
+                {
+                    if (q[j] < q[i])
+                    {
+                        bribes_counter++;
+                        /* a bribe can be index fixed,
+                         only if it was a single bribe that was taken over by double bribe */
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                int c = 0;
+                /* running back to the start, checking if all the numbers that below the current is there */
+                for (int j = i; j >= 0; j--)
+                {
+                    if (q[j] < q[i])
+                    {
+                        c++;
+                    }
+                }
+                if (c < q[i] - 1)
                 {
                     bribes_counter++;
-                    break; /* a bribe can be index fixed, only if it was a single bribe that was taken over by double bribe */
                 }
+
             }
         }
         if (i == (q_count-1))
